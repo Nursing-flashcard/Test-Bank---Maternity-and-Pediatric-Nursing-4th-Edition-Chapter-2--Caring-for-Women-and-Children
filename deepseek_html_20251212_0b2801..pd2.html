@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maternity & Pediatric Nursing - Chapter 2 Flashcards</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #9c27b0 0%, #673ab7 100%);
+            min-height: 100vh;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            height: 95vh;
+            max-height: 95vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #9c27b0, #673ab7);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" opacity="0.1"><path d="M30,30 Q50,10 70,30 T90,50 T70,70 T50,90 T30,70 T10,50 T30,30 Z" fill="white"/></svg>');
+        }
+        
+        .header h1 {
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+            margin-bottom: 8px;
+            position: relative;
+        }
+        
+        .header .subtitle {
+            font-size: clamp(0.8rem, 2.5vw, 1rem);
+            opacity: 0.9;
+            position: relative;
+        }
+        
+        .progress {
+            background: #6a1b9a;
+            height: 8px;
+            width: 100%;
+            flex-shrink: 0;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #9c27b0, #673ab7);
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s ease;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .flashcard {
+            padding: clamp(10px, 3vw, 20px);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #f8f9fa;
+            overflow-y: auto;
+        }
+        
+        .question-container {
+            display: flex;
+            gap: clamp(10px, 2vw, 15px);
+            align-items: flex-start;
+            margin-bottom: clamp(10px, 2vw, 15px);
+        }
+        
+        .question-icon {
+            background: #9c27b0;
+            color: white;
+            width: clamp(35px, 8vw, 50px);
+            height: clamp(35px, 8vw, 50px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            font-weight: bold;
+            flex-shrink: 0;
+            box-shadow: 0 4px 8px rgba(156, 39, 176, 0.3);
+        }
+        
+        .question {
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            line-height: 1.6;
+            color: #2c3e50;
+            flex-grow: 1;
+            font-weight: 500;
+        }
+        
+        .multiple-select-indicator {
+            background: #e74c3c;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 10px;
+            white-space: nowrap;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(6px, 1.5vw, 10px);
+            margin-bottom: clamp(10px, 2vw, 20px);
+            flex: 1;
+        }
+        
+        .option {
+            padding: clamp(10px, 2vw, 14px) clamp(12px, 2.5vw, 18px);
+            border: 2px solid #f3e5f5;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            display: flex;
+            align-items: center;
+            gap: clamp(8px, 1.5vw, 10px);
+            font-size: clamp(0.85rem, 2vw, 1rem);
+        }
+        
+        .option:hover {
+            background: #f3e5f5;
+            border-color: #ce93d8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .option-letter {
+            background: #f3e5f5;
+            color: #2c3e50;
+            width: clamp(24px, 5vw, 28px);
+            height: clamp(24px, 5vw, 28px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+            font-size: clamp(0.75rem, 1.8vw, 0.9rem);
+        }
+        
+        /* CORRECT - ALWAYS GREEN */
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+        
+        .option.correct .option-letter {
+            background: #28a745;
+            color: white;
+        }
+        
+        /* INCORRECT - ALWAYS RED */
+        .option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+        
+        .option.incorrect .option-letter {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .feedback {
+            padding: clamp(12px, 2.5vw, 16px);
+            border-radius: 12px;
+            margin-bottom: clamp(10px, 2vw, 16px);
+            display: none;
+            align-items: center;
+            gap: clamp(8px, 1.5vw, 12px);
+            font-weight: 500;
+            font-size: clamp(0.85rem, 2vw, 1rem);
+        }
+        
+        .feedback.correct {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+            display: flex;
+        }
+        
+        .feedback.incorrect {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+            display: flex;
+        }
+        
+        .feedback-icon {
+            font-size: clamp(1.2rem, 3vw, 1.4rem);
+            flex-shrink: 0;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: clamp(12px, 2.5vw, 16px) clamp(16px, 3vw, 24px);
+            background: #f3e5f5;
+            border-top: 1px solid #e1bee7;
+            flex-shrink: 0;
+        }
+        
+        .counter {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: clamp(0.85rem, 2vw, 1rem);
+        }
+        
+        .btn {
+            padding: clamp(10px, 2vw, 12px) clamp(15px, 2.5vw, 20px);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: clamp(6px, 1vw, 8px);
+            font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+            white-space: nowrap;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #9c27b0, #673ab7);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(156, 39, 176, 0.3);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #ce93d8, #9c27b0);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(206, 147, 216, 0.3);
+        }
+        
+        .rationale {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border: 2px solid #ffd43b;
+            border-radius: 12px;
+            padding: clamp(12px, 2.5vw, 16px);
+            margin-top: clamp(8px, 1.5vw, 12px);
+            display: none;
+        }
+        
+        .rationale.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+        
+        .rationale h4 {
+            color: #856404;
+            margin-bottom: clamp(6px, 1.2vw, 10px);
+            display: flex;
+            align-items: center;
+            gap: clamp(6px, 1.2vw, 8px);
+            font-size: clamp(0.9rem, 2.2vw, 1.1rem);
+        }
+        
+        .rationale p {
+            color: #856404;
+            line-height: 1.6;
+            font-size: clamp(0.8rem, 1.8vw, 0.95rem);
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .stats {
+            display: flex;
+            gap: clamp(8px, 1.5vw, 15px);
+            justify-content: center;
+            margin-top: clamp(4px, 1vw, 10px);
+            flex-wrap: wrap;
+        }
+        
+        .stat {
+            background: rgba(255,255,255,0.2);
+            padding: clamp(5px, 1vw, 6px) clamp(8px, 1.8vw, 12px);
+            border-radius: 20px;
+            font-size: clamp(0.7rem, 1.6vw, 0.85rem);
+            white-space: nowrap;
+        }
+        
+        /* Cancel selection button */
+        .cancel-selection {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            margin: 0 auto clamp(10px, 2vw, 15px) auto;
+            display: none;
+        }
+        
+        .cancel-selection:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(231, 76, 60, 0.3);
+        }
+        
+        .cancel-selection.show {
+            display: flex;
+        }
+        
+        /* Study mode controls */
+        .study-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .study-btn {
+            padding: 8px 16px;
+            border: 2px solid #9c27b0;
+            background: white;
+            color: #9c27b0;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .study-btn.active {
+            background: #9c27b0;
+            color: white;
+        }
+        
+        .study-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(156, 39, 176, 0.2);
+        }
+        
+        /* Multiple select instructions */
+        .multiple-select-instructions {
+            text-align: center;
+            color: #e74c3c;
+            font-weight: 500;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .score-display {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>👶 Maternity & Pediatric Nursing - Chapter 2</h1>
+            <div class="subtitle">Caring for Women and Children | 25 Questions</div>
+            <div class="stats">
+                <div class="stat">📚 Test Bank Questions</div>
+                <div class="stat">🎯 Detailed Rationales</div>
+                <div class="stat">🔢 Multiple-Answer Questions</div>
+                <div class="stat">↩️ Cancel Wrong Answers</div>
+            </div>
+            <div class="score-display" id="scoreDisplay">Score: 0/25</div>
+        </div>
+        <div class="progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <div class="flashcard">
+            <div class="study-controls">
+                <button class="study-btn active" id="allQuestionsBtn" onclick="setStudyMode('all')">All Questions</button>
+                <button class="study-btn" id="multipleSelectBtn" onclick="setStudyMode('multiple')">Multiple-Select Only</button>
+                <button class="study-btn" id="singleSelectBtn" onclick="setStudyMode('single')">Single-Select Only</button>
+                <button class="study-btn" id="incorrectBtn" onclick="setStudyMode('incorrect')">Review Incorrect</button>
+            </div>
+            
+            <div class="question-container">
+                <div class="question-icon">?</div>
+                <div class="question" id="question"></div>
+                <div class="multiple-select-indicator" id="multipleSelectIndicator" style="display: none;">Multiple Answers</div>
+            </div>
+            
+            <div class="multiple-select-instructions" id="multipleSelectInstructions" style="display: none;">
+                💡 Select ALL correct answers - This question has multiple correct options
+            </div>
+            
+            <div class="options" id="options"></div>
+            
+            <!-- Cancel Selection Button - Only shows for wrong answers -->
+            <button class="btn cancel-selection" id="cancelBtn" onclick="cancelSelection()">
+                ↩️ Cancel Selection
+            </button>
+            
+            <div class="feedback" id="feedback">
+                <div class="feedback-icon" id="feedbackIcon"></div>
+                <div id="feedbackText"></div>
+            </div>
+            <div class="rationale" id="rationale">
+                <h4>💡 Rationale:</h4>
+                <p id="rationaleText"></p>
+            </div>
+        </div>
+        
+        <div class="navigation">
+            <button class="btn btn-secondary" id="prevBtn" onclick="previousCard()">
+                ⬅️ Previous
+            </button>
+            <div class="counter" id="counter">1/25</div>
+            <button class="btn btn-primary" id="nextBtn" onclick="nextCard()">
+                Next ➡️
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "1. The nurse is caring for a 2-week-old newborn girl with a metabolic disorder. Which of the following activities would deviate from the characteristics of family-centered care?",
+                options: [
+                    "Softening unpleasant information or prognoses",
+                    "Evaluating and changing the nursing plan of care",
+                    "Collaborating with the child and family as equals",
+                    "Showing respect for the family's beliefs and wishes"
+                ],
+                correct: 0,
+                rationale: "Family-centered care involves open, honest communication. Softening or withholding unpleasant information deviates from this principle as it prevents families from making fully informed decisions about their child's care. Collaboration, respect, and involving families in care planning are key components of family-centered care."
+            },
+            {
+                question: "2. The nurse is providing home care for a 6-year-old girl with multiple medical challenges. Which of the following activities would be considered the tertiary level of prevention?",
+                options: [
+                    "Arranging for a physical therapy session",
+                    "Teaching parents to administer albuterol",
+                    "Reminding parent to give a full course of antibiotics",
+                    "Giving a DTaP vaccination at the proper interval"
+                ],
+                correct: 0,
+                rationale: "Tertiary prevention focuses on minimizing disability and restoring function in individuals with established health problems. Physical therapy for a child with multiple medical challenges aims to restore function and prevent further complications. Teaching medication administration and ensuring antibiotic completion are secondary prevention, while vaccination is primary prevention."
+            },
+            {
+                question: "3. A nursing student is reviewing information about documenting client care and education in the medical record and the purposes that it serves. The student demonstrates a need for additional study when the nurse identifies which of the following as a reason?",
+                options: [
+                    "Serves as a communication tool for the interdisciplinary team.",
+                    "Demonstrates education the family has received if legal matters arise.",
+                    "Permits others access to allow refusal of medical insurance coverage.",
+                    "Verifies meeting client education standards set by the Joint Commission."
+                ],
+                correct: 2,
+                rationale: "Documentation in medical records serves many purposes, including communication among healthcare providers, legal protection, and verification of compliance with standards. However, it does not exist to permit refusal of medical insurance coverage. Insurance coverage decisions are based on policy terms and medical necessity, not on documentation for the purpose of refusal."
+            },
+            {
+                question: "4. A pregnant client tells her nurse that she is interested in arranging a home birth. After educating the client on the advantages and disadvantages, which statement would indicate that the client understood the information?",
+                options: [
+                    "\"I like having the privacy, but it might be too expensive for me to set up in my home.\"",
+                    "\"I want to have more control, but I am concerned if an emergency would arise.\"",
+                    "\"It is safer because I will have a midwife.\"",
+                    "\"The midwife is trained to resolve any emergency, and she can bring any pain meds.\""
+                ],
+                correct: 1,
+                rationale: "Home birth offers advantages like increased control and privacy but has the disadvantage of potential delays in emergency care if complications arise. A balanced understanding acknowledges both the desire for control and the realistic concern about emergencies. Statements about absolute safety or midwives resolving any emergency overstate the capabilities in home settings."
+            },
+            {
+                question: "5. The nurse is making a home visit to a client who had a cesarean birth 3 days ago. Assessment reveals that the client is complaining of intermittent pain, rating it as 8 on a scale of 1 to 10. She states, \"I'm pretty tired. And with this pain, I haven't been drinking and eating like I should. The medication helps a bit but not much. My mom has been helping with the baby.\" Her incision is clean, dry, and intact. Which nursing diagnosis would the nurse identify as the priority for this client?",
+                options: [
+                    "Impaired skin integrity related to cesarean birth incision",
+                    "Fatigue related to effects of surgery and caretaking activities",
+                    "Imbalanced nutrition, less than body requirements related to poor fluid and food intake",
+                    "Acute pain related to incision and cesarean birth"
+                ],
+                correct: 3,
+                rationale: "Acute pain is the priority nursing diagnosis because unmanaged pain (rated as 8/10) contributes to other problems: fatigue, poor nutrition/hydration, and impaired healing. Addressing pain first will help resolve related issues. The incision is intact, so impaired skin integrity is not currently a problem."
+            },
+            {
+                question: "6. When caring for childbearing families from cultures different from one's own, which of the following must be accomplished first?",
+                options: [
+                    "Adapt to the practices of the family's culture",
+                    "Determine similarities between both cultures",
+                    "Assess personal feelings about that culture",
+                    "Learn as much as possible about that culture"
+                ],
+                correct: 2,
+                rationale: "Cultural competence begins with self-awareness. The nurse must first examine their own biases, values, and feelings about different cultures before effectively caring for families from diverse backgrounds. Without this self-assessment, the nurse may unintentionally impose personal values or misinterpret cultural practices."
+            },
+            {
+                question: "7. After teaching a group of students about the changes in health care delivery and funding, which of the following, if identified by the group as a current trend seen in the maternal and child health care settings, would indicate that the teaching was successful?",
+                options: [
+                    "Increase in community settings for care",
+                    "Decrease in family poverty level",
+                    "Increase in hospitalization of children",
+                    "Decrease in managed care"
+                ],
+                correct: 0,
+                rationale: "A current trend in maternal and child health care is the shift from hospital-based to community-based settings to provide more accessible, cost-effective care. This includes clinics, schools, and home health services. Poverty levels remain a concern, hospitalization rates are generally decreasing for routine care, and managed care continues to be predominant."
+            },
+            {
+                question: "8. The nurse would recommend the use of which supplement as a primary prevention strategy to prevent neural tube defects with pregnant women?",
+                options: [
+                    "Calcium",
+                    "Folic acid",
+                    "Vitamin C",
+                    "Iron"
+                ],
+                correct: 1,
+                rationale: "Folic acid supplementation (400-800 mcg daily) before conception and during early pregnancy is a primary prevention strategy that significantly reduces the risk of neural tube defects like spina bifida. Calcium supports bone health, vitamin C aids absorption and immunity, and iron prevents anemia, but folic acid specifically targets neural tube development."
+            },
+            {
+                question: "9. Which action would the nurse include in a primary prevention program in the community to help reduce the incidence of HIV infection?",
+                options: [
+                    "Provide treatment for clients who test positive for HIV",
+                    "Monitor viral load counts periodically",
+                    "Educate clients in how to practice safe sex",
+                    "Offer testing for clients who practice unsafe sex"
+                ],
+                correct: 2,
+                rationale: "Primary prevention aims to prevent disease before it occurs. Educating about safe sex practices (condom use, reducing partners) prevents HIV transmission. Treatment and viral load monitoring are tertiary prevention for those already infected. Testing is secondary prevention (early detection)."
+            },
+            {
+                question: "10. When assuming the role of discharge planner for a woman requiring ventilator support at home, the nurse would do which of the following?",
+                options: [
+                    "Confer with the client's mother",
+                    "Teach new self-care skills to the client",
+                    "Determine if there is a need for back-up power",
+                    "Discuss coverage with the insurance company"
+                ],
+                correct: 2,
+                rationale: "For a client requiring ventilator support at home, ensuring continuity of care during power outages is critical. Determining need for back-up power (generator, battery) addresses safety. While teaching, conferring with family, and insurance discussions are important, safety concerns like power failure take priority for life-sustaining equipment."
+            },
+            {
+                question: "11. When comparing community-based nursing with nursing in the acute care setting to a group of nursing students, the nurse describes the challenges associated with community-based nursing. Which of the following would the nurse include?",
+                options: [
+                    "Increased time available for education",
+                    "Improved access to resources",
+                    "Decision making in isolation",
+                    "Greater environmental structure"
+                ],
+                correct: 2,
+                rationale: "Community-based nurses often work autonomously, making decisions in isolation without immediate access to colleagues or supervisors. Acute care settings offer more collaboration. Community nursing typically has less structured environments and may face resource limitations, requiring creativity and independence."
+            },
+            {
+                question: "12. After teaching a group of students about the different levels of prevention, the instructor determines a need for additional teaching when the students identify which of the following as a secondary prevention level activity in community-based health care?",
+                options: [
+                    "Teaching women to take folic acid supplements to prevent neural tube defects",
+                    "Working with women who are victims of domestic violence",
+                    "Working with clients at an HIV clinic to provide nutritional and CAM therapies",
+                    "Teaching hypertensive clients to monitor blood pressure"
+                ],
+                correct: 2,
+                rationale: "Secondary prevention involves early detection and intervention to halt disease progression. Teaching folic acid use is primary prevention. Working with domestic violence victims and teaching BP monitoring are secondary (early intervention). Providing nutritional/CAM therapies at an HIV clinic is tertiary prevention (managing established disease)."
+            },
+            {
+                question: "13. A nursing instructor is describing trends in maternal and newborn health care. The instructor addresses the length of stay for vaginal births during the past decade, citing that which of the following denotes the average stay?",
+                options: [
+                    "24–48 hours or less",
+                    "72–96 hours or less",
+                    "48–72 hours or less",
+                    "96–120 hours or less"
+                ],
+                correct: 0,
+                rationale: "The average length of stay for uncomplicated vaginal births has decreased to 24-48 hours or less, influenced by managed care, cost containment, and evidence that early discharge with appropriate follow-up is safe for low-risk mothers and infants. This trend requires careful assessment and follow-up planning."
+            },
+            {
+                question: "14. Which of the following statements is accurate regarding women's health care in today's system?",
+                options: [
+                    "Women spend 95 cents of every dollar spent on health care.",
+                    "Women make almost 90% of all health care decisions.",
+                    "Women are still the minority in the United States.",
+                    "Men use more health services than women."
+                ],
+                correct: 1,
+                rationale: "Women make approximately 80-90% of health care decisions for their families and themselves, influencing healthcare utilization and spending. Women are actually the majority of the U.S. population and use more health services than men due to reproductive health needs, longer life expectancy, and greater healthcare engagement."
+            },
+            {
+                question: "15. A nurse is educating a client about a care plan. Which of the following statements would be appropriate to assess the client's learning ability?",
+                options: [
+                    "\"Did you graduate from high school; how many years of schooling did you have?\"",
+                    "\"Do you have someone in your family who would understand this information?\"",
+                    "\"Many people have trouble remembering information; is this a problem for you?\"",
+                    "\"Would you prefer that the doctor give you more detailed medical information?\""
+                ],
+                correct: 2,
+                rationale: "Assessing learning ability involves evaluating cognitive function, memory, and comprehension barriers. Asking about memory difficulties directly addresses learning capacity. Years of schooling doesn't necessarily correlate with current learning ability. The other options don't assess the client's personal learning capabilities."
+            },
+            {
+                question: "16. A nurse is developing cultural competence. Which of the following indicates that the nurse is in the process of developing cultural knowledge? Select all that apply.",
+                options: [
+                    "Examining personal sociocultural heritage",
+                    "Reviewing personal biases and prejudices",
+                    "Seeking resources to further understanding of other cultures",
+                    "Becoming familiar with other culturally diverse lifestyles",
+                    "Performing a competent cultural assessment",
+                    "Advocating for social justice to eliminate disparities."
+                ],
+                correct: [2, 3],
+                rationale: "Cultural knowledge involves actively learning about different cultures through resources and familiarization with diverse lifestyles. Examining personal heritage and biases is cultural self-awareness. Performing assessments demonstrates cultural skill. Advocacy reflects cultural encounters and commitment to social justice."
+            },
+            {
+                question: "17. A nurse is engaged in providing family-centered care for a woman and her family. The nurse is providing instrumental support with which activity?",
+                options: [
+                    "Explaining to the woman and family what to expect during the birth process.",
+                    "Assisting the woman in breathing techniques to cope with labor contractions.",
+                    "Reinforcing the woman's role as a mother after birth",
+                    "Helping the family obtain extra financial help for prescribed phototherapy"
+                ],
+                correct: 3,
+                rationale: "Instrumental support involves tangible, practical assistance like obtaining resources, financial aid, or services. The other options represent informational support (explaining expectations), emotional support (reinforcing roles), or direct care (breathing techniques)."
+            },
+            {
+                question: "18. A nurse is considering a change in employment from the acute care setting to community-based nursing. The nurse is focusing her job search on ambulatory care settings. Which of the following would the nurse most likely find as a possible setting? Select all that apply.",
+                options: [
+                    "Urgent care center",
+                    "Hospice care",
+                    "Immunization clinic",
+                    "Physician's office",
+                    "Day surgery center",
+                    "Nursing home"
+                ],
+                correct: [0, 2, 3, 4],
+                rationale: "Ambulatory care settings provide services to clients who are not hospitalized. These include urgent care centers, immunization clinics, physician offices, and day surgery centers. Hospice care can be home-based or inpatient. Nursing homes are residential/long-term care facilities, not typically considered ambulatory care."
+            },
+            {
+                question: "19. A nursing instructor is presenting a class for a group of students about community-based nursing interventions. The instructor determines that additional teaching is needed when the students identify which of the following?",
+                options: [
+                    "Conducting childbirth education classes",
+                    "Counseling a pregnant teen with anemia",
+                    "Consulting with a parent of a child who is vomiting",
+                    "Performing epidemiologic investigations"
+                ],
+                correct: 3,
+                rationale: "Community-based nursing focuses on direct care, education, counseling, and consultation for individuals/families. Performing epidemiologic investigations (tracking disease patterns in populations) is typically the role of public health nurses or epidemiologists, not general community-based nurses who focus on individual/family care."
+            },
+            {
+                question: "20. During class, a nursing student asks, \"I read an article that was talking about integrative medicine. What is that?\" Which response by the instructor would be most appropriate?",
+                options: [
+                    "\"It refers to the use of complementary and alternative medicine in place of traditional therapies for a condition.\"",
+                    "\"It means that complementary and alternative medicine is used together with conventional therapies to reduce pain or discomfort.\"",
+                    "\"It means that mainstream medical therapies and complementary and alternative therapies are combined based on scientific evidence for being effective.\"",
+                    "\"It refers to situations when a client and his or her family prefer to use an unproven method of treatment over a proven one.\""
+                ],
+                correct: 2,
+                rationale: "Integrative medicine combines conventional medical treatments with complementary/alternative therapies that have scientific evidence of safety and effectiveness. It's not about replacing conventional care or using unproven methods, but creating a comprehensive approach based on evidence."
+            },
+            {
+                question: "21. While a nurse is obtaining a health history, the client tells the nurse that she practices aromatherapy. The nurse interprets this as which of the following?",
+                options: [
+                    "Use of essential oils to stimulate the sense of smell to balance the mind and body",
+                    "Application of pressure to specific points to allow self-healing",
+                    "Use of deep massage of areas on the foot or hand to rebalance body parts",
+                    "Participation in chanting and praying to promote healing."
+                ],
+                correct: 0,
+                rationale: "Aromatherapy involves using essential oils extracted from plants to stimulate the olfactory system, promoting physical and emotional well-being. Pressure application refers to acupressure/acupuncture. Foot/hand massage relates to reflexology. Chanting/praying involves spiritual practices."
+            },
+            {
+                question: "22. A pregnant woman asks the nurse about giving birth in a birthing center. She says, \"I'm thinking about using one but I'm not sure.\" Which of the following would the nurse need to integrate into the explanation about this birth setting? (Select all that apply.)",
+                options: [
+                    "An alternative for women who are uncomfortable with a home birth.",
+                    "The longer length of stay needed when compared to hospital births",
+                    "Focus on supporting women through labor instead of managing labor",
+                    "View of labor and birth as a normal process requiring no intervention",
+                    "Care provided primarily by obstetricians with midwives as backup care"
+                ],
+                correct: [0, 2, 3],
+                rationale: "Birthing centers offer a homelike setting with a philosophy of birth as a normal process, minimal intervention, and supportive care through labor. They typically have shorter stays than hospitals (not longer). Care is usually provided by certified nurse-midwives, not primarily by obstetricians."
+            },
+            {
+                question: "23. A nurse practicing in the community is preparing a presentation for a group of nursing students about this practice setting. Which of the following would the nurse include as characteristic of this role?",
+                options: [
+                    "Greater emphasis on direct physical care",
+                    "Broader assessment to include the environment",
+                    "Increased dependency on physician",
+                    "Limited decision making and support"
+                ],
+                correct: 1,
+                rationale: "Community-based nursing requires broader assessments that include environmental factors (home safety, resources, support systems), not just physical symptoms. Community nurses typically work more autonomously with less direct physician supervision than in acute care, requiring strong decision-making skills."
+            },
+            {
+                question: "24. A nurse is preparing a teaching plan for a woman who is pregnant for the first time. Which of the following would the nurse incorporate into the teaching plan to foster the client's learning? (Select all that apply.)",
+                options: [
+                    "Teach \"survival skills\" first",
+                    "Use simple, nonmedical language",
+                    "Refrain from using a hands-on approach",
+                    "Avoid repeating information",
+                    "Use visual materials such as photos and videos"
+                ],
+                correct: [0, 1, 4],
+                rationale: "Effective client teaching includes prioritizing essential \"survival skills,\" using clear nonmedical language, and incorporating visual aids for different learning styles. A hands-on approach can enhance learning for kinesthetic learners, and repetition reinforces important information, so these should not be avoided."
+            },
+            {
+                question: "25. A group of nurses are reviewing the steps for developing cultural competence. The students demonstrate understanding when they identify which of the following as the final step?",
+                options: [
+                    "Cultural knowledge",
+                    "Cultural skills",
+                    "Cultural encounter",
+                    "Cultural awareness"
+                ],
+                correct: 2,
+                rationale: "The final step in developing cultural competence is cultural encounter - engaging in cross-cultural interactions to refine and apply knowledge/skills. The typical progression is: 1) Cultural awareness (self-examination), 2) Cultural knowledge (learning about cultures), 3) Cultural skills (assessment/communication abilities), 4) Cultural encounter (direct experience)."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let selectedOption = null;
+        let score = 0;
+        let answers = Array(questions.length).fill(null);
+        let incorrectQuestions = [];
+        let studyMode = 'all'; // 'all', 'multiple', 'single', 'incorrect'
+        let filteredQuestions = [...questions];
+
+        function updateScoreDisplay() {
+            const correctCount = questions.reduce((count, question, index) => {
+                if (answers[index] === null || answers[index] === undefined) return count;
+                
+                if (Array.isArray(question.correct)) {
+                    const selected = answers[index] || [];
+                    const allCorrect = question.correct.every(c => selected.includes(c));
+                    const noIncorrect = selected.every(s => question.correct.includes(s));
+                    return allCorrect && noIncorrect ? count + 1 : count;
+                } else {
+                    return answers[index] === question.correct ? count + 1 : count;
+                }
+            }, 0);
+            
+            document.getElementById('scoreDisplay').textContent = `Score: ${correctCount}/${questions.length}`;
+            return correctCount;
+        }
+
+        function setStudyMode(mode) {
+            studyMode = mode;
+            
+            // Update button states
+            document.querySelectorAll('.study-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(mode + 'Btn').classList.add('active');
+            
+            // Filter questions based on mode
+            switch(mode) {
+                case 'all':
+                    filteredQuestions = [...questions];
+                    break;
+                case 'multiple':
+                    filteredQuestions = questions.filter(q => Array.isArray(q.correct) && q.correct.length > 1);
+                    break;
+                case 'single':
+                    filteredQuestions = questions.filter(q => !Array.isArray(q.correct) || q.correct.length === 1);
+                    break;
+                case 'incorrect':
+                    filteredQuestions = questions.filter((_, index) => incorrectQuestions.includes(index));
+                    if (filteredQuestions.length === 0) {
+                        alert('No incorrect questions to review yet!');
+                        filteredQuestions = [...questions];
+                    }
+                    break;
+            }
+            
+            currentQuestion = 0;
+            loadQuestion();
+        }
+
+        function isMultipleSelectQuestion(question) {
+            return Array.isArray(question.correct) && question.correct.length > 1;
+        }
+
+        function loadQuestion() {
+            if (filteredQuestions.length === 0) {
+                document.getElementById('question').textContent = "No questions available for the selected study mode.";
+                document.getElementById('options').innerHTML = '';
+                document.getElementById('counter').textContent = `0/0`;
+                return;
+            }
+
+            const question = filteredQuestions[currentQuestion];
+            const originalIndex = questions.indexOf(question);
+            
+            document.getElementById('question').textContent = question.question;
+            document.getElementById('counter').textContent = `${currentQuestion + 1}/${filteredQuestions.length}`;
+            
+            // Update progress bar
+            const progress = ((currentQuestion + 1) / filteredQuestions.length) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            
+            // Show/hide multiple select indicators
+            const isMultiple = isMultipleSelectQuestion(question);
+            document.getElementById('multipleSelectIndicator').style.display = isMultiple ? 'block' : 'none';
+            document.getElementById('multipleSelectInstructions').style.display = isMultiple ? 'block' : 'none';
+            
+            // Load options
+            const optionsContainer = document.getElementById('options');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.innerHTML = `
+                    <div class="option-letter">${String.fromCharCode(65 + index)}</div>
+                    <div class="option-text">${option}</div>
+                `;
+                optionElement.onclick = () => selectOption(index);
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Reset feedback and rationale
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('feedback').style.display = 'none';
+            document.getElementById('rationale').className = 'rationale';
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
+            document.getElementById('nextBtn').textContent = currentQuestion === filteredQuestions.length - 1 ? 'Finish ➡️' : 'Next ➡️';
+            
+            // Check if we have a stored answer for this question
+            const storedAnswer = answers[originalIndex];
+            document.getElementById('nextBtn').disabled = storedAnswer === null || storedAnswer === undefined;
+            
+            // Reset cancel button visibility
+            document.getElementById('cancelBtn').classList.remove('show');
+            
+            // If this question was already answered, show the answer
+            if (storedAnswer !== null && storedAnswer !== undefined) {
+                if (Array.isArray(storedAnswer)) {
+                    // Multiple selection question
+                    storedAnswer.forEach(index => {
+                        selectOption(index, true);
+                    });
+                } else {
+                    // Single selection question
+                    selectOption(storedAnswer, true);
+                }
+            }
+            
+            // Update score display
+            updateScoreDisplay();
+        }
+
+        function selectOption(index, fromMemory = false) {
+            const question = filteredQuestions[currentQuestion];
+            const originalIndex = questions.indexOf(question);
+            
+            // Check if this is a multiple selection question
+            if (isMultipleSelectQuestion(question)) {
+                // Multiple selection logic
+                if (!fromMemory) {
+                    if (!answers[originalIndex]) {
+                        answers[originalIndex] = [];
+                    }
+                    
+                    const optionIndex = answers[originalIndex].indexOf(index);
+                    if (optionIndex === -1) {
+                        answers[originalIndex].push(index);
+                    } else {
+                        answers[originalIndex].splice(optionIndex, 1);
+                    }
+                }
+                
+                highlightSelectedOptions();
+                showFeedbackForMultiple();
+                
+                // Enable next button if at least one option is selected
+                document.getElementById('nextBtn').disabled = !answers[originalIndex] || answers[originalIndex].length === 0;
+                updateScoreDisplay();
+                return;
+            }
+            
+            // Single selection logic
+            if (selectedOption !== null && !fromMemory) return;
+            
+            if (!fromMemory) {
+                selectedOption = index;
+                answers[originalIndex] = index;
+            }
+            
+            highlightSelectedOption(index);
+            showFeedback(index);
+            
+            // Enable next button
+            document.getElementById('nextBtn').disabled = false;
+            updateScoreDisplay();
+        }
+
+        function highlightSelectedOption(index) {
+            const options = document.querySelectorAll('.option');
+            const question = filteredQuestions[currentQuestion];
+            const originalIndex = questions.indexOf(question);
+            
+            options.forEach((option, i) => {
+                option.classList.remove('correct', 'incorrect');
+                
+                if (i === index) {
+                    // ALWAYS show correct answers in GREEN
+                    if (i === question.correct) {
+                        option.classList.add('correct');
+                        if (!answers[originalIndex]) score++;
+                        document.getElementById('cancelBtn').classList.remove('show');
+                        
+                        // Remove from incorrect questions if it was there
+                        const incorrectIndex = incorrectQuestions.indexOf(originalIndex);
+                        if (incorrectIndex > -1) {
+                            incorrectQuestions.splice(incorrectIndex, 1);
+                        }
+                    } else {
+                        // ALWAYS show incorrect answers in RED
+                        option.classList.add('incorrect');
+                        // Also highlight the correct answer in GREEN
+                        options[question.correct].classList.add('correct');
+                        document.getElementById('cancelBtn').classList.add('show');
+                        
+                        // Add to incorrect questions
+                        if (!incorrectQuestions.includes(originalIndex)) {
+                            incorrectQuestions.push(originalIndex);
+                        }
+                    }
+                }
+            });
+        }
+
+        function highlightSelectedOptions() {
+            const options = document.querySelectorAll('.option');
+            const question = filteredQuestions[currentQuestion];
+            const originalIndex = questions.indexOf(question);
+            const selectedIndices = answers[originalIndex] || [];
+            
+            // First, highlight ALL correct answers in GREEN
+            question.correct.forEach(correctIndex => {
+                options[correctIndex].classList.add('correct');
+            });
+            
+            // Then, highlight selected options
+            options.forEach((option, i) => {
+                if (selectedIndices.includes(i)) {
+                    // If selected but incorrect, highlight in RED
+                    if (!question.correct.includes(i)) {
+                        option.classList.add('incorrect');
+                    }
+                }
+            });
+            
+            // Check if answer is correct and update score/tracking
+            const allCorrectSelected = question.correct.every(c => selectedIndices.includes(c));
+            const noIncorrectSelected = selectedIndices.every(s => question.correct.includes(s));
+            
+            if (allCorrectSelected && noIncorrectSelected) {
+                if (!answers[originalIndex]) score++;
+                // Remove from incorrect questions
+                const incorrectIndex = incorrectQuestions.indexOf(originalIndex);
+                if (incorrectIndex > -1) {
+                    incorrectQuestions.splice(incorrectIndex, 1);
+                }
+            } else {
+                // Add to incorrect questions
+                if (!incorrectQuestions.includes(originalIndex)) {
+                    incorrectQuestions.push(originalIndex);
+                }
+            }
+        }
+
+        function cancelSelection() {
+            const question = filteredQuestions[currentQuestion];
+            const originalIndex = questions.indexOf(question);
+            
+            selectedOption = null;
+            answers[originalIndex] = null;
+            
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => {
+                option.classList.remove('correct', 'incorrect');
+            });
+            
+            document.getElementById('feedback').style.display = 'none';
+            document.getElementById('rationale').classList.remove('show');
+            document.getElementById('cancelBtn').classList.remove('show');
+            document.getElementById('nextBtn').disabled = true;
+            
+            // Update score display
+            updateScoreDisplay();
+        }
+
+        function showFeedback(index) {
+            const question = filteredQuestions[currentQuestion];
+            const feedback = document.getElementById('feedback');
+            const feedbackIcon = document.getElementById('feedbackIcon');
+            const feedbackText = document.getElementById('feedbackText');
+            const rationale = document.getElementById('rationale');
+            const rationaleText = document.getElementById('rationaleText');
+            
+            if (index === question.correct) {
+                feedback.className = 'feedback correct';
+                feedbackIcon.textContent = '✅';
+                feedbackText.textContent = 'Correct! Well done.';
+            } else {
+                feedback.className = 'feedback incorrect';
+                feedbackIcon.textContent = '❌';
+                feedbackText.textContent = `Incorrect. The right answer is: ${String.fromCharCode(65 + question.correct)}`;
+            }
+            
+            feedback.style.display = 'flex';
+            rationaleText.textContent = question.rationale;
+            rationale.classList.add('show');
+        }
+
+        function showFeedbackForMultiple() {
+            const question = filteredQuestions[currentQuestion];
+            const originalIndex = questions.indexOf(question);
+            const feedback = document.getElementById('feedback');
+            const feedbackIcon = document.getElementById('feedbackIcon');
+            const feedbackText = document.getElementById('feedbackText');
+            const rationale = document.getElementById('rationale');
+            const rationaleText = document.getElementById('rationaleText');
+            
+            const selectedIndices = answers[originalIndex] || [];
+            const allCorrectSelected = question.correct.every(c => selectedIndices.includes(c));
+            const noIncorrectSelected = selectedIndices.every(s => question.correct.includes(s));
+            
+            if (allCorrectSelected && noIncorrectSelected) {
+                feedback.className = 'feedback correct';
+                feedbackIcon.textContent = '✅';
+                feedbackText.textContent = 'Correct! All right answers selected.';
+            } else {
+                feedback.className = 'feedback incorrect';
+                feedbackIcon.textContent = '❌';
+                const correctLetters = question.correct.map(c => String.fromCharCode(65 + c)).join(', ');
+                feedbackText.textContent = `Incorrect. The right answers are: ${correctLetters}`;
+            }
+            
+            feedback.style.display = 'flex';
+            rationaleText.textContent = question.rationale;
+            rationale.classList.add('show');
+        }
+
+        function nextCard() {
+            if (currentQuestion < filteredQuestions.length - 1) {
+                currentQuestion++;
+                selectedOption = null;
+                loadQuestion();
+            } else {
+                const correctCount = updateScoreDisplay();
+                
+                alert(`Quiz completed! Your score: ${correctCount}/${questions.length}\nIncorrect questions: ${incorrectQuestions.length}`);
+                
+                if (studyMode === 'incorrect' && incorrectQuestions.length > 0) {
+                    // Continue with incorrect questions
+                    filteredQuestions = questions.filter((_, index) => incorrectQuestions.includes(index));
+                    currentQuestion = 0;
+                    loadQuestion();
+                } else {
+                    // Reset to all questions
+                    currentQuestion = 0;
+                    selectedOption = null;
+                    score = 0;
+                    answers = Array(questions.length).fill(null);
+                    filteredQuestions = [...questions];
+                    setStudyMode('all');
+                }
+            }
+        }
+
+        function previousCard() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                const question = filteredQuestions[currentQuestion];
+                const originalIndex = questions.indexOf(question);
+                selectedOption = answers[originalIndex];
+                loadQuestion();
+            }
+        }
+
+        // Initialize the app
+        loadQuestion();
+    </script>
+</body>
+</html>
